@@ -1436,8 +1436,6 @@ class MsfModule(object):
             runopts['TARGET'] = self.target
             if 'DisablePayloadHandler' in runopts and runopts['DisablePayloadHandler']:
                 pass
-            elif payload is None:
-                runopts['DisablePayloadHandler'] = True
             else:
                 if isinstance(payload, PayloadModule):
                     if payload.modulename not in self.payloads:
@@ -1456,8 +1454,6 @@ class MsfModule(object):
                     if payload not in self.payloads:
                         raise ValueError('Invalid payload (%s) for given target (%d).' % (payload, self.target))
                     runopts['PAYLOAD'] = payload
-                else:
-                    raise TypeError("Expected type str or PayloadModule not '%s'" % type(kwargs['payload']).__name__)
 
         return self.rpc.call(MsfRpcMethod.ModuleExecute, [self.moduletype, self.modulename, runopts])
 
