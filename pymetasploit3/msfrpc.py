@@ -1470,8 +1470,6 @@ class MsfModule(object):
             runopts['TARGET'] = self.target
             if 'DisablePayloadHandler' in runopts and runopts['DisablePayloadHandler']:
                 pass
-            elif payload is None:
-                runopts['DisablePayloadHandler'] = True
             else:
                 if isinstance(payload, PayloadModule):
                     if payload.modulename not in self.payloads:
@@ -2260,8 +2258,6 @@ class MsfConsole(object):
             raise MsfError('Console {} is busy'.format(self.cid))
         self.rpc.consoles.console(self.cid).read()  # clear data buffer
         opts = mod.runoptions.copy()
-        if payload is None:
-            opts['DisablePayloadHandler'] = True
 
         # Set module params
         for k in opts.keys():
@@ -2283,8 +2279,6 @@ class MsfConsole(object):
                     if v is None or (isinstance(v, str) and not v):
                         continue
                     options_str += 'set {} {}\n'.format(k, v)
-            else:
-                raise ValueError('No valid PayloadModule provided for exploit execution.')
 
         # Run the module without directly opening a command line
         options_str += 'run -z'
